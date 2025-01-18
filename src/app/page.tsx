@@ -89,7 +89,7 @@ function App() {
 
         <div>{hash && <div>成功写入 newString , Transaction Hash: {hash}</div>}</div>
 
-        <h5>发送交易 开发中...</h5>
+        <h5>发送交易 test...</h5>
 
       </div>
     </>
