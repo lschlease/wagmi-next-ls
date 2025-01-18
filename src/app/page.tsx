@@ -19,7 +19,7 @@ function App() {
 
   const { data: readContractSayHelloWorld } = useReadContract({
     ...wagmiContractConfig,
-    functionName: 'sayHelloWorld',
+    functionName: 'name',
   })
 
   const { data: hash, isPending, writeContract } = useWriteContract()
@@ -27,12 +27,13 @@ function App() {
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
-    const newString = formData.get('newString') as string
+    const amount = formData.get('amount') as any
+    const address = formData.get('address') as any
 
     writeContract({
       ...wagmiContractConfig,
-      functionName: 'setHelloWorld',
-      args: [newString],
+      functionName: 'mint',
+      args: [address, amount],
     })
   }
 
@@ -76,19 +77,26 @@ function App() {
 
       <div>
         <h2>与合约交互</h2>
-        <h5>读取合同 sayHelloWorld</h5>
-        <div>sayHelloWorld : {readContractSayHelloWorld}</div>
+        <h5>读取合约信息 </h5>
+        <div>代币 : {readContractSayHelloWorld}</div>
 
-        <h5>写入合约 setHelloWorld</h5>
+        <h5>铸造代币到地址//</h5>
 
         <form onSubmit={submit}>
-          <input name="newString" placeholder="newString" required style={{ width: 200, height: 30, marginRight: 8 }} />
+          amount:
+          <br />
+          <input name="amount" placeholder="amount" required style={{ width: 200, height: 30, marginRight: 8 }} />
+          <br />
+          to:
+          <br />
+          <input name="address" placeholder="address" required style={{ width: 200, height: 30, marginRight: 8 }} />
+          <br />
+          <br />
           <button type="submit" disabled={isPending}>
-            {isPending ? '确认中...' : '写入合约中的 setHelloWorld'} </button>
+            {isPending ? '确认中...' : '铸造代币'} </button>
         </form>
 
-        <div>{hash && <div>成功写入 newString , Transaction Hash: {hash}</div>}</div>
-
+      
         <h5>发送交易 test...</h5>
 
       </div>
